@@ -1,9 +1,8 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Assets/Materials/DarkTestMaterial.tres" type="Material" id=1]
 [ext_resource path="res://Assets/Materials/RedTestMaterial.tres" type="Material" id=2]
 [ext_resource path="res://Assets/Materials/CausticsMaterial.tres" type="Material" id=3]
-[ext_resource path="res://Assets/Scripts/Main.gd" type="Script" id=4]
 [ext_resource path="res://WorldEnvironment.tres" type="Environment" id=5]
 
 [sub_resource type="SphereMesh" id=1]
@@ -12,7 +11,6 @@
 size = Vector3( 4, 4, 4 )
 
 [node name="Main" type="Spatial"]
-script = ExtResource( 4 )
 
 [node name="TestScene" type="CSGCombiner" parent="."]
 
