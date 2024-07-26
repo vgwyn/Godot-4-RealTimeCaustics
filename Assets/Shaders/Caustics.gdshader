@@ -1,7 +1,9 @@
 shader_type spatial;
-render_mode blend_add, cull_front, depth_test_disable, ambient_light_disabled;
+render_mode blend_add, cull_front, depth_test_disabled, ambient_light_disabled;
 
 uniform sampler2D caustics_noise;
+uniform sampler2D DEPTH_TEXTURE : hint_depth_texture, filter_linear_mipmap;
+uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear_mipmap;
 
 uniform vec3 box_size = vec3(1.0);
 
@@ -14,15 +16,16 @@ uniform float caustics_fade_radius = 0.8;
 uniform float caustics_fade_strength = 0.5;
 uniform float caustics_luminance_mask_strength = 1.2;
 uniform float chroma_split = 0.1;
-uniform sampler2D luma_gradient : hint_white;
+uniform sampler2D luma_gradient : hint_default_white;
 
 varying mat4 vertex_camera;
 varying mat4 vertex_world;
 varying mat4 vertex_projection;
 varying mat4 vertex_modelview;
+
 void vertex(){
-	vertex_camera = CAMERA_MATRIX;
-	vertex_world = WORLD_MATRIX;
+	vertex_camera = INV_VIEW_MATRIX;
+	vertex_world = MODEL_MATRIX;
 	vertex_projection = PROJECTION_MATRIX;
 	vertex_modelview = MODELVIEW_MATRIX;
 }
@@ -75,7 +78,7 @@ void fragment(){
 	vec4 world = vertex_camera * INV_PROJECTION_MATRIX * vec4(ndc, 1.0);
 	
 	positionWS = world.xyz / world.w;
-	positionOS = positionWS - WORLD_MATRIX[3].xyz;
+	positionOS = positionWS - MODEL_MATRIX[3].xyz;
 	bbox_mask = check_encompass_point(positionWS);
 	
 	screen_color = texture(SCREEN_TEXTURE, SCREEN_UV).rgb;
@@ -112,7 +115,7 @@ mat3 makeRotationDir(vec3 direction, vec3 up){
 
 void light(){
 	// Mapping texture
-	vec3 world_light = (vec4(LIGHT, 1.0) * INV_CAMERA_MATRIX).xyz;
+	vec3 world_light = (vec4(LIGHT, 1.0) * VIEW_MATRIX).xyz;
 	mat3 lrm = makeRotationDir(world_light, vec3(0.0, 1.0, 0.0));
 	mat4 t = mat4(lrm);
 	t[3].xyz = positionWS;
