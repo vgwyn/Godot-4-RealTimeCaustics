@@ -1,3 +1,9 @@
+# Godot 4 Update
+vgwyn here -- the original work was created by paddy-exe. I'm merely trying to update it to make it work for Godot 4 -- I haven't been successful (my knowledge about shaders, and how everything changed since Godot 3.x is limited).
+Contributors welcome and appreciated!
+
+All text below is unchanged from the original repo.
+
 # Godot - (RealTime-ish) Caustics
 [![LICENSE](https://img.shields.io/badge/LICENSE-MIT-blue?style=for-the-badge&logo=godotengine)](https://github.com/paddy-exe/Godot-RealTimeCaustics/blob/3.x/LICENSE.md)
 
